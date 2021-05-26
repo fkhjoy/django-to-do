@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from todo.views import logoutuser, signupuser, currenttodos, home, loginuser
+from todo.views import logoutuser, signupuser, currenttodos, home, loginuser, createtodo
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,4 +27,5 @@ urlpatterns = [
     path('loginuser/', loginuser, name='loginuser'),
 
     path('currenttodos/', currenttodos, name='currenttodos'),
+    path('createtodo/', createtodo, name='createtodo'),
 ]
