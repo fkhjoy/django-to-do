@@ -5,7 +5,7 @@
 
 <ul>
     {% for todo in todos %}
-    <li>{{ todo.title }}</li>
+    <li>{% if todo.important %}<b>{% endif %}{{ todo.title }}{% if todo.important %}</b>{% endif %}</li>
     {% endfor %}
 </ul>
 {% endblock %}

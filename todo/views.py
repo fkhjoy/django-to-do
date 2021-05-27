@@ -8,6 +8,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.views.decorators.csrf import csrf_exempt
 from django.db import IntegrityError
 from .forms import TodoForm
+from .models import Todo
 
 # Create your views here.
 
@@ -61,4 +62,7 @@ def createtodo(request):
         return redirect('currenttodos')
 
 def currenttodos(request):
-    return render(request, 'todo/currenttodos.html')
+    # todos = Todo.objects.all()
+    todos = Todo.objects.filter(user = request.user)
+    # print(todos)
+    return render(request, 'todo/currenttodos.html', {'todos':todos})
