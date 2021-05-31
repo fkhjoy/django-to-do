@@ -2,7 +2,7 @@ from todo.forms import TodoForm
 from django.contrib import auth
 from django.contrib.auth.models import User
 from django.http.response import HttpResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
 from django.views.decorators.csrf import csrf_exempt
@@ -66,3 +66,8 @@ def currenttodos(request):
     todos = Todo.objects.filter(user = request.user)
     # print(todos)
     return render(request, 'todo/currenttodos.html', {'todos':todos})
+
+def viewtodo(request, todo_pk):
+    todo = get_object_or_404(Todo, pk=todo_pk)
+    form = TodoForm(instance=todo)
+    return render(request, 'todo/viewtodo.html', {'todo':todo, 'form':form})
