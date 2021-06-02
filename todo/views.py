@@ -10,6 +10,7 @@ from django.db import IntegrityError
 from .forms import TodoForm
 from .models import Todo
 from django.utils import timezone
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -46,12 +47,14 @@ def loginuser(request):
             login(request, user)
             return redirect('currenttodos')
 
+@login_required
 def logoutuser(request):
     # pass
     if request.method == "POST":
         logout(request)
         return redirect('home')
 
+@login_required
 def createtodo(request):
     if request.method == 'GET':
         return render(request, 'todo/createtodo.html', {'form': TodoForm()})
@@ -62,12 +65,14 @@ def createtodo(request):
         new_todo.save()
         return redirect('currenttodos')
 
+@login_required
 def currenttodos(request):
     # todos = Todo.objects.all()
     todos = Todo.objects.filter(user = request.user, completedAt__isnull = True)
     # print(todos)
     return render(request, 'todo/currenttodos.html', {'todos':todos})
 
+@login_required
 def viewtodo(request, todo_pk):
     todo = get_object_or_404(Todo, pk=todo_pk, user=request.user)
 
@@ -82,7 +87,7 @@ def viewtodo(request, todo_pk):
         except ValueError:
             return render(request, 'todo/viewtodo.html', {'todo':todo, 'form':form, 'error':'Bad Info'})
 
-
+@login_required
 def completetodo(request, todo_pk):
     todo = get_object_or_404(Todo, pk=todo_pk, user=request.user)
 
@@ -91,12 +96,14 @@ def completetodo(request, todo_pk):
         todo.save()
         return redirect('currenttodos')
 
+@login_required
 def completedtodos(request):
     todos = Todo.objects.filter(user=request.user, completedAt__isnull=False).order_by('-completedAt')
     print(todos)
     return render(request, 'todo/completedtodos.html', {'todos':todos})
 
 
+@login_required
 def deletetodo(request, todo_pk):
     todo = get_object_or_404(Todo, pk=todo_pk, user=request.user)
 
